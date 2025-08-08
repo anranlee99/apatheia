@@ -1,42 +1,212 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My Book</title>
-  <style>
-    body { font-family: sans-serif; max-width: 700px; margin: auto; padding: 1rem; }
-    #nav { margin: 1rem 0; }
-    pre { white-space: pre-wrap; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Apatheia</title>
+<style>
+  :root{
+    color-scheme: light dark;
+    --bg: #ffffff; --fg:#111111; --muted:#666; --panel:#fafafa; --border:#eee;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0b0b0b; --fg:#e7e7e7; --muted:#9aa0a6; --panel:#121212; --border:#272727; }
+  }
+  html[data-theme="light"]{ --bg:#ffffff; --fg:#111; --muted:#666; --panel:#fafafa; --border:#eee; }
+  html[data-theme="dark"]{ --bg:#0b0b0b; --fg:#e7e7e7; --muted:#9aa0a6; --panel:#121212; --border:#272727; }
+
+  body {
+    font-family: system-ui, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    display: flex; flex-direction: column; align-items: center;
+    background: var(--bg); color: var(--fg);
+  }
+  header, main, nav, footer {
+    width: 100%; max-width: 800px; padding: 1rem; box-sizing: border-box; text-align: center;
+  }
+  h1 { margin: 0; font-size: 1.5rem; }
+  .sub { color: var(--muted); font-size: .95rem; margin-top: .25rem; }
+  .controls {
+    display: flex; gap: .5rem; align-items: center; justify-content: center; flex-wrap: wrap; margin: .5rem 0 1rem;
+  }
+  button, select {
+    padding: .5rem .75rem; font-size: 1rem; cursor: pointer; background: var(--panel); color: var(--fg); border: 1px solid var(--border); border-radius: 6px;
+  }
+  button:disabled{ opacity:.5; cursor: default; }
+  pre {
+    white-space: pre-wrap; word-wrap: break-word; text-align: left;
+    background: var(--panel); padding: 1rem; border-radius: 8px; border: 1px solid var(--border);
+  }
+  footer { color: var(--muted); font-size: .9rem; border-top: 1px solid var(--border); display: flex; gap: 1rem; align-items: center; justify-content: center; flex-wrap: wrap; }
+  code { background: var(--panel); padding:.12rem .3rem; border-radius:4px; border: 1px solid var(--border); }
+
+  /* Toggle slider */
+  .toggle { display:inline-flex; gap:.5rem; align-items:center; user-select:none; }
+  .switch { position: relative; width: 46px; height: 26px; display:inline-block; }
+  .switch input { display:none; }
+  .slider {
+    position:absolute; inset:0; border-radius: 999px; background: var(--border);
+    transition: transform .2s ease, background .2s ease;
+  }
+  .slider::before{
+    content:""; position:absolute; height:22px; width:22px; left:2px; top:2px; border-radius:50%; background: var(--panel); border:1px solid var(--border);
+    transition: transform .2s ease;
+  }
+  .switch input:checked + .slider { background: #3a7afe55; }
+  .switch input:checked + .slider::before { transform: translateX(20px); }
+  .label { color: var(--muted); }
+</style>
 </head>
 <body>
-  <h1 id="title"></h1>
-  <div id="nav">
-    <button id="prev">Previous</button>
-    <button id="next">Next</button>
-  </div>
-  <pre id="content">Loading...</pre>
 
-  <script>
-    let chapter = 0;
+<header>
+  <h1 id="pageTitle">Loading…</h1>
+  <div id="subTitle" class="sub"></div>
+</header>
 
-    function loadChapter(num) {
-      fetch(`chapters/ch${num}.txt`)
-        .then(r => r.text())
-        .then(text => {
-          document.getElementById('content').textContent = text;
-          document.getElementById('title').textContent = `Chapter ${num}`;
-          chapter = num;
-        })
-        .catch(() => {
-          document.getElementById('content').textContent = 'No more chapters.';
-        });
+<nav id="controlsTop"></nav>
+
+<main>
+  <pre id="content">Scanning chapters…</pre>
+</main>
+
+<nav id="controlsBottom"></nav>
+
+<footer>
+  <span>Use ← → to navigate. Hash like <code>#ch=5</code> jumps to a chapter.</span>
+  <span class="toggle">
+    <span class="label">Dark theme</span>
+    <label class="switch">
+      <input type="checkbox" id="themeToggle" aria-label="Dark theme">
+      <span class="slider"></span>
+    </label>
+  </span>
+</footer>
+
+
+<script>
+const dir = 'chapters', prefix = 'ch', ext = '.txt', startIndex = 0, hardMax = 5000;
+let chapters = [], current = startIndex;
+
+const $ = id => document.getElementById(id);
+const titleEl = $('pageTitle'), subEl = $('subTitle'), contentEl = $('content');
+const themeToggle=$('themeToggle');
+(function initTheme(){
+  const saved = localStorage.getItem('book.theme'); // "light" | "dark" | null
+  const sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const start = saved ?? (sysDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', start);
+  themeToggle.checked = (start === 'dark');
+})();
+themeToggle.addEventListener('change', ()=>{
+  const mode = themeToggle.checked ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', mode);
+  localStorage.setItem('book.theme', mode);
+});
+function fileFor(idx){ return `${dir}/${prefix}${idx}${ext}`; }
+function setTitle(text){ 
+
+  titleEl.textContent = text.split(".txt")[0]; 
+}
+function getHash(){ const m = location.hash.match(/ch=(\d+)/); return m ? parseInt(m[1],10) : null; }
+function setHash(idx){ history.replaceState(null, '', `#ch=${idx}`); }
+
+async function tryFetch(url){
+  const r = await fetch(url, {cache:'no-store'});
+  if (!r.ok) throw new Error(r.status);
+  return r.text();
+}
+
+async function scan(){
+  chapters = [];
+  for (let i = startIndex; i < hardMax; i++){
+    try {
+      const txt = await tryFetch(fileFor(i));
+      const firstLine = (txt.split(/\r?\n/, 1)[0] || '').trim();
+      // Look for "title: ..." (case-insensitive) on the very first line
+      const m = firstLine.match(/^title:\s*(.*)$/i);
+      const title = m ? m[1].trim() : '';
+      chapters.push({ idx: i, file: `${prefix}${i}`, title });
+    } catch {
+      break; // stop scanning at the first gap
     }
+  }
+}
 
-    document.getElementById('prev').onclick = () => loadChapter(chapter - 1);
-    document.getElementById('next').onclick = () => loadChapter(chapter + 1);
 
-    loadChapter(0); // start at ch0
-  </script>
+function makeControls(containerId){
+  const container = $(containerId);
+  container.innerHTML = '';
+  const prevBtn = document.createElement('button');
+  prevBtn.textContent = '◀ Prev';
+  prevBtn.onclick = () => show(neighbor(-1));
+  const nextBtn = document.createElement('button');
+  nextBtn.textContent = 'Next ▶';
+  nextBtn.onclick = () => show(neighbor(1));
+  const select = document.createElement('select');
+  select.onchange = () => show(parseInt(select.value,10));
+  for (const ch of chapters){
+    const opt = document.createElement('option');
+    opt.value = ch.idx;
+    opt.textContent = ch.file + (ch.title ? ` — ${ch.title}` : '');
+    select.appendChild(opt);
+  }
+  container.append(prevBtn, select, nextBtn);
+  container.dataset.prev = prevBtn;
+  container.dataset.next = nextBtn;
+  container.dataset.select = select;
+}
+
+function updateControls(){
+  const min = Math.min(...chapters.map(c=>c.idx));
+  const max = Math.max(...chapters.map(c=>c.idx));
+  for (const id of ['controlsTop','controlsBottom']){
+    const nav = $(id);
+    const prev = nav.querySelector('button:first-child');
+    const next = nav.querySelector('button:last-child');
+    const sel = nav.querySelector('select');
+    prev.disabled = current <= min;
+    next.disabled = current >= max;
+    sel.value = current;
+  }
+}
+
+function neighbor(delta){
+  const indices = chapters.map(c=>c.idx);
+  const pos = indices.indexOf(current);
+  return chapters[pos+delta] ? chapters[pos+delta].idx : current;
+}
+
+async function show(idx){
+  const entry = chapters.find(c=>c.idx===idx);
+  if (!entry){ contentEl.textContent='Not found'; return; }
+  try {
+    const txt = await tryFetch(fileFor(idx));
+    setTitle(entry.file);
+    subEl.textContent = entry.title || '';
+    contentEl.textContent = txt;
+    current = idx;
+    setHash(idx);
+    updateControls();
+  } catch { contentEl.textContent='Failed to load'; }
+}
+
+document.addEventListener('keydown', e=>{
+  if (e.key==='ArrowLeft'){ e.preventDefault(); show(neighbor(-1)); }
+  if (e.key==='ArrowRight'){ e.preventDefault(); show(neighbor(1)); }
+});
+
+(async function init(){
+  await scan();
+  if (!chapters.length){ contentEl.textContent='No chapters found'; return; }
+  makeControls('controlsTop');
+  makeControls('controlsBottom');
+  let target = getHash() ?? startIndex;
+  if (!chapters.find(c=>c.idx===target)){ target = chapters[0].idx; }
+  show(target);
+})();
+</script>
+
 </body>
 </html>
