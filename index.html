@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apatheia</title>
+<style>
+  :root { --w: 56rem; }
+  body { margin: 0; font: 18px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+  header, footer { padding: .75rem 1rem; background: #f5f5f5; }
+  main { max-width: var(--w); margin: 2rem auto; padding: 0 1rem; }
+  h1 { margin: 0; font-size: 1rem; font-weight: 600; }
+  #content { white-space: pre-wrap; }
+  .row { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
+  .spacer { flex: 1; }
+  button, select { font: inherit; padding: .4rem .6rem; }
+  .muted { opacity: .6; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="row">
+    <h1 id="title">chapters/ch0.txt</h1>
+    <div class="spacer"></div>
+    <label for="chapterSelect" class="muted">Jump:</label>
+    <select id="chapterSelect" aria-label="Choose chapter"></select>
+    <button id="prevBtn" type="button">← Prev</button>
+    <button id="nextBtn" type="button">Next →</button>
+  </div>
+</header>
+
+<main>
+  <article id="content">Loading…</article>
+</main>
+
+<footer class="row">
+  <div class="spacer"></div>
+  <span class="muted">Left/Right arrows to navigate</span>
+</footer>
+
+<script>
+/* -------- config (you can tweak) -------- */
+const DIR = 'chapters';         // folder holding chapter files
+const PREFIX = 'ch';            // filename prefix
+const EXT = '.txt';             // file extension
+const START = 0;                // start index (defaults to ch0)
+/* ---------------------------------------- */
+
+const $ = (id) => document.getElementById(id);
+const titleEl = $('title');
+const headerTitle = $('title') && document.querySelector('h1#title');
+const contentEl = $('content');
+const selectEl = $('chapterSelect');
+const prevBtn = $('prevBtn');
+const nextBtn = $('nextBtn');
+
+let chapters = []; // e.g., ["ch0","ch1","ch2"]
+let current = null;
+
+async function exists(path) {
+  try { const r = await fetch(path, { method: 'HEAD', cache: 'no-store' }); return r.ok; }
+  catch { return false; }
+}
+
+// Discover ch0, ch1, ch2, ... until first missing; requires contiguous numbering.
+async function discover() {
+  const out = [];
+  for (let i = START; i < 1000; i++) {
+    const base = `${PREFIX}${i}`;
+    if (!await exists(`${DIR}/${base}${EXT}`)) break;
+    out.push(base);
+  }
+  return out.length ? out : [`${PREFIX}${START}`];
+}
+
+function hashToChapter() {
+  const tag = location.hash.replace('#','');
+  return chapters.includes(tag) ? tag : chapters[0];
+}
+
+async function load(chBase) {
+  const path = `${DIR}/${chBase}${EXT}`;
+  headerTitle.textContent = path;
+  document.title = `${path} — Apatheia`;
+
+  try {
+    const res = await fetch(path, { cache: 'no-store' });
+    if (!res.ok) throw new Error(res.statusText);
+    const text = await res.text();
+    contentEl.textContent = text;
+  } catch (e) {
+    contentEl.textContent = `Could not load ${path}\n\n${e}`;
+  }
+
+  // update controls
+  current = chBase;
+  selectEl.value = chBase;
+  const i = chapters.indexOf(chBase);
+  prevBtn.disabled = (i <= 0);
+  nextBtn.disabled = (i >= chapters.length - 1);
+}
+
+function gotoByIndex(i) {
+  if (i < 0 || i >= chapters.length) return;
+  location.hash = `#${chapters[i]}`;
+}
+
+function buildSelect() {
+  selectEl.innerHTML = '';
+  for (const ch of chapters) {
+    const opt = document.createElement('option');
+    opt.value = ch;
+    opt.textContent = ch; // filename base; simple + explicit
+    selectEl.appendChild(opt);
+  }
+}
+
+/* --- events --- */
+window.addEventListener('hashchange', () => load(hashToChapter()));
+selectEl.addEventListener('change', () => (location.hash = `#${selectEl.value}`));
+prevBtn.addEventListener('click', () => gotoByIndex(chapters.indexOf(current) - 1));
+nextBtn.addEventListener('click', () => gotoByIndex(chapters.indexOf(current) + 1));
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') prevBtn.click();
+  if (e.key === 'ArrowRight') nextBtn.click();
+});
+
+/* --- boot --- */
+(async function boot() {
+  chapters = await discover();                 // e.g., ["ch0","ch1","ch2"]
+  buildSelect();
+  if (!location.hash) location.hash = `#${chapters[0]}`;  // default to ch0
+  await load(hashToChapter());
+})();
+</script>
+
+</body>
+</html>
+
