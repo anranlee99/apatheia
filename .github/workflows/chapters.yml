@@ -1,3 +1,4 @@
+# .github/workflows/chapters.yml
 name: Generate chapter pages
 on:
   push:
@@ -14,32 +15,35 @@ jobs:
       - name: Generate markdown wrappers from .txt
         shell: bash
         run: |
+          set -euo pipefail
           shopt -s nullglob
+
           mkdir -p chapters
+
           for f in chapters/ch*.txt; do
-            base="$(basename "$f" .txt)"        # e.g., ch3
-            num="${base#ch}"                    # e.g., 3
+            base="$(basename "$f" .txt)"      # ch3
+            num="${base#ch}"                  # 3
             md="chapters/${base}.md"
 
-            # Simple, safe title. (You can get fancy later by reading the first line.)
-            title="Chapter ${num}"
+            # Optional: title from first non-empty line, else "Chapter N"
+            first_line=$(grep -m1 -E '.\S.+' "$f" || true)
+            if [[ -n "${first_line:-}" ]]; then
+              title="$first_line"
+            else
+              title="Chapter ${num}"
+            fi
 
-            cat > "$md" <<'EOF'
----
-title: PLACEHOLDER_TITLE
-order: PLACEHOLDER_ORDER
-permalink: /PLACEHOLDER_BASE/
-layout: chapter
----
-
-{% capture body %}{% include_relative PLACEHOLDER_BASE.txt %}{% endcapture %}
-{{ body | newline_to_br }}
-EOF
-
-            # Fill placeholders
-            sed -i "s/PLACEHOLDER_TITLE/${title//\//\\/}/" "$md"
-            sed -i "s/PLACEHOLDER_ORDER/${num}/" "$md"
-            sed -i "s/PLACEHOLDER_BASE/${base}/g" "$md"
+            {
+              printf -- '---\n'
+              printf -- 'title: %s\n' "$title"
+              printf -- 'order: %s\n' "$num"
+              printf -- 'permalink: /%s/\n' "$base"
+              printf -- 'layout: chapter\n'
+              printf -- '---\n\n'
+              # Liquid tags for Jekyll (shell won't expand these)
+              printf -- '{%% capture body %%}{%% include_relative %s.txt %%}{%% endcapture %%}\n' "$base"
+              printf -- '{{ body | newline_to_br }}\n'
+            } > "$md"
           done
 
       - name: Commit wrappers (if any changes)
