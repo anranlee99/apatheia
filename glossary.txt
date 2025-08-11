@@ -1,0 +1,25 @@
+Apatheia: The name of the world in which the story takes place, where reincarnation is a natural part of life and Dirma signify the number of one’s past lives.
+
+Arcanum: A grand, temple-like institution built into the side of the colossal world-tree, serving as a center of knowledge, magic, and instruction for novices and scholars alike.
+
+Arkhaios: The Primarch — the first of the people of Apatheia. Currently in Tanai, and regarded as the ultimate authority in matters of great importance.
+
+Council: A governing body made up of those with many rebirths and extensive Dirma. They lead with wisdom and provide guidance when the path forward is unclear. Their demeanor is detached and ancient, though they often appear youthful.
+
+Dirma: Intricate, birthmark-like patterns on the skin, gained with each rebirth. They grow in complexity over time, developing fractal-like details but never touching one another.
+
+Dirmus: A single Dirma pattern. Each person gains one new Dirmus per rebirth.
+
+Nova: An individual newly arrived in Apatheia who has never lived there before. They are given a name at birth and raised with foundational teachings about the world.
+
+Omnis: A goddess-like being who claims to have created everything in the world of Apatheia. She sent the protagonist to this world from Earth.
+
+Primarch: Another title for Arkhaios, denoting their position as the first of the people.
+
+Sol: A unit of time in Apatheia equivalent to a year. There are ten syns in a sol.
+
+Syn: A unit of time in Apatheia equivalent to a lunar month. Ten syns make up a sol.
+
+Tanai: A state or period between lives in Apatheia, the time between death and the next rebirth. Each Tanai is longer than the last.
+
+Velar: A person in their first return (second life) in Apatheia. Unlike Novas, Velar are not given a new name and are expected to retain knowledge from their Nova life.
