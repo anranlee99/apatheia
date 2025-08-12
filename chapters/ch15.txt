@@ -1,0 +1,47 @@
+The other pupils were already filing out, their chairs scraping softly against the floor as they left for lunch. I stayed seated, the purse of coins Tariel had given me still resting in my lap.
+
+The tutor noticed. "You’re not going to eat?" she asked.
+
+"In a minute," I said. "I have a question."
+
+She tilted her head slightly, curious. "Go ahead."
+
+"If a computation with Arcana can give you an answer by brute force," I began, "can it also be done with less Arcana if the method is clever enough? And if so, how would you know the most efficient method without already spending the Arcana to check it?"
+
+She blinked. "That is... not a question I have heard from a Nova before. No, from anyone," she pondered.
+
+"I do not have much Arcana," I explained. "There are many things done with Arcana that would not be within my reach. I would end up relying on others a great deal. I want to know if there is another way."
+
+"Arcana use scales with the size of the problem," she said after a moment. "The more you want to know, the more you must spend. Cleverness... is not usually a consideration."
+
+"That is what I am asking. If no one tries to find the clever way, how do you know the brute force is the only option?"
+
+Her mouth curved slightly, not quite a smile. "That is... a fair question." She tapped her chin. "I do not have the answer. But I know someone who might."
+
+Before I could respond, she added, "Come with me. It is not far."
+
+We walked through a side corridor lined with smooth crystal tablets stacked into alcoves. She greeted a few passing students before stopping in front of a tall door made from some dark, polished wood.
+
+Inside, an older man with a long braid was hunched over a table covered in small metallic instruments. He looked up as we entered.
+
+"Master," my tutor said, "this is Euler. He has a question I think you should hear."
+
+The old master set down a magnifier and motioned for me to speak.
+
+I repeated my question.
+
+He leaned forward slightly, eyes narrowing in interest. "Explain what you mean. What would a 'cleverer' method look like to you?"
+
+I thought for a moment. "Suppose you want to go from one corner of a field to the opposite corner. You could walk along the two sides: first one edge, then turn and walk the other. That works, but it takes longer. Or you could take the diagonal and arrive at the same spot in less time."
+
+The master’s weathered fingers tapped lightly against the edge of the table. "So in your mind, the Arcana is the distance traveled... and the method is the path you choose."
+
+"Exactly," I said. "If you can find the shorter path, you use less Arcana and still get the same answer."
+
+He sat back, his expression thoughtful now. "That is a simple way to put it, but the principle is not simple at all. It would mean understanding the shape of the problem before solving it... which in many cases is as costly as solving it directly."
+
+"Maybe," I said, "but not always. I just want to know if it can be done with Arcana."
+
+The master’s gaze flicked to my tutor, then back to me. "This is not a question that will be answered in an afternoon. And you will not find the answer in the novice curriculum."
+
+He was silent for a beat, then smiled faintly. "I think I know who will want to hear this."
