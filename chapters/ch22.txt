@@ -1,0 +1,82 @@
+My days at the Arcanum slipped into a rhythm.
+Mirari had instructed begin with the basics: reading crystal tablets. 
+I read the a curation that Mirari procured for me. 
+Her recollection of which tablets contained what contents could be found by simply reading their descriptors, inlayed on its surface, but not only did she not need this, she was keenly aware of the location of each volume.
+
+Geography, histories of councils long past, fragments of natural studies; all of it passed through me in long sessions of quiet study.
+
+It didn’t take long before my reservoir of Arcana ran dry.
+The symptoms were unmistakable: trembling hands, dulled vision, and a faint hollow ache in my chest. 
+It took me some time to recognize the limit, but Mirari was always patient. 
+When I staggered, she would quietly redirect me to sit, press a cool drink into my hands, and wait until my focus returned. 
+She never chided, only observed, as though my weakness were a problem to be measured rather than corrected.
+
+Once I learned my boundaries, she began insisting I use the intervals of exhaustion more productively. "If you cannot hold more," she said, "then shape what you already have."
+
+So I turned to transcription. Not of the tablets, but of the fragments I carried within me - sketches from the archive Omnis had granted me. 
+On sheets of vellum, I drew the outlines of something no one here had yet imagined: the bones of computation.
+
+*** 
+
+Today, my transcriptions had reached a point where it was time for me to teach Mirari something for once: the AND gate.
+
+"The scholars of my world had a formal discipline we would have simply called logic," I began, unsure as to how to produce an explanation that is both correct and simple. 
+
+"The goal here is not so much to make the machine think, but rather to make our instructions so precise that there is no ambiguity," I continued.
+
+"The sandwich exercise," Mirari's lips curled as she nodded.
+
+"Exactly. And the key ingredient to our sandwich machine, excuse the pun, is known as the AND gate," I said.  
+
+***
+
+I set two stones on the table.
+
+"Imagine these stones are switches. Each one can be ON or OFF. Stone here means ON, no stone means OFF. Now picture a very picky doorman standing by a gate. He will only open if both switches are ON. If even one is missing, the gate stays shut."
+
+I showed her:
+
+Both stones present - I tapped my fingers. "The doorman opens."
+
+One stone gone - I shook my head. "He stays shut."
+
+Both stones gone - same result.
+
+Mirari leaned forward, her eyes narrowing. "So it demands agreement. Both conditions must be true."
+
+"Exactly. This is an AND gate. It answers the simple question: Are both things true? If yes, it returns YES. Otherwise, NO."
+
+"But what can you do with such a simple idea?" she asked.
+
+"Everything," I said.
+
+I reached for a crust of bread and a scrap of vellum. "Let’s build a rule. If you are hungry, then have a sandwich. That’s one doorman. He checks ‘Hungry?’ If yes, you get bread. If no, nothing."
+
+I placed the bread down as the result.
+
+"Now another rule: If you have a sandwich, bring a napkin too. That’s a second doorman. He checks for ‘Sandwich.’ If it’s there, he hands you a napkin as well."
+
+I set the vellum beside the bread.
+
+Mirari tilted her head. "So the napkin only appears if hunger was true in the beginning. Because the second doorman will only move if the first already allowed the sandwich through."
+
+"Exactly!" I sketched arrows in a chain: Hungry -> Sandwich -> Napkin.
+"Now watch how we can combine conditions. Suppose the rule is: If you are hungry AND it is lunchtime, then have a sandwich. Now two doormen stand side by side - one checks hunger, the other checks time. Only if both are true do you receive the bread."
+
+She stared at the little tableaux of stones, bread, and vellum. I could see the realization creeping across her face.
+
+"The more doormen you place," she said slowly, "the more complex the law becomes."
+
+"Yes. And that’s all a computer really is - armies of these doormen, each deciding tiny questions. Put enough of them together, and they can send information, simulate the weather, or even write music. They don’t care what the stones mean. Hungry, lunchtime, thunderstorm, true or false - it’s all the same to them."
+
+I could tell she wasn’t quite convinced, so I leaned in.
+
+"Here’s another. Suppose we want a rule: You only get dessert if you had a sandwich first. That’s another doorman, after the first. He checks for ‘Sandwich’ before handing you a sweet. No sandwich, no dessert. Now chain it with another: If you had dessert AND it’s your birthday, then you also get cake. That’s yet another gate, checking two things at once."
+
+I laid out bread, napkin, a sweet fruit, and finally a little wedge of cake.
+Mirari laughed softly at the absurd arrangement.
+
+"So in this system, every outcome - bread, napkin, dessert, cake - depends on the tokens that entered at the start, and on how many doormen we stationed along the way."
+
+"Exactly. That’s programming."
+
