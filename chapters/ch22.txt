@@ -1,7 +1,7 @@
 My days at the Arcanum slipped into a rhythm.
 Mirari had instructed begin with the basics: reading crystal tablets. 
-I read the a curation that Mirari procured for me. 
-Her recollection of which tablets contained what contents could be found by simply reading their descriptors, inlayed on its surface, but not only did she not need this, she was keenly aware of the location of each volume.
+I read the curation that Mirari procured for me. 
+Her recollection of which tablets contained what contents could be found by simply reading their descriptors, inlaid on its surface, but not only did she not need this, she was keenly aware of the location of each volume.
 
 Geography, histories of councils long past, fragments of natural studies; all of it passed through me in long sessions of quiet study.
 
@@ -73,7 +73,7 @@ I could tell she wasn’t quite convinced, so I leaned in.
 
 "Here’s another. Suppose we want a rule: You only get dessert if you had a sandwich first. That’s another doorman, after the first. He checks for ‘Sandwich’ before handing you a sweet. No sandwich, no dessert. Now chain it with another: If you had dessert AND it’s your birthday, then you also get cake. That’s yet another gate, checking two things at once."
 
-I laid out bread, napkin, a sweet fruit, and finally a little wedge of cake.
+I laid out bread, a napkin, a sweet fruit, and finally a little wedge of cake.
 Mirari laughed softly at the absurd arrangement.
 
 "So in this system, every outcome - bread, napkin, dessert, cake - depends on the tokens that entered at the start, and on how many doormen we stationed along the way."
